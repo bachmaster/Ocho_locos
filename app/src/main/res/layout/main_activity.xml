@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_main_v"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iVganador"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:scaleType="centerCrop"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_winner" />
+
+    <TextView
+        android:id="@+id/tVganador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#60FFFFFF"
+        android:fontFamily="@font/aclonica"
+        android:lineSpacingExtra="12sp"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#000000"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        />
+    <TextView
+        android:id="@+id/tVturnoJ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="sans-serif-black"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/carta_volteada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tVturnoJ"
+        app:srcCompat="@drawable/tapa_carta"
+        android:contentDescription="TODO" />
+
+    <HorizontalScrollView
+        android:id="@+id/scroll_mano_cartas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="SpeakableTextPresentCheck">
+
+        <TableRow
+            android:id="@+id/cartas_en_mano_jA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:scrollbarSize="@android:dimen/app_icon_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"></TableRow>
+    </HorizontalScrollView>
+
+    <pe.edu.ulima.pm.ocholocos.views.CardView
+        android:id="@+id/central_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/scroll_mano_cartas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tVturnoJ" />
+
+    <Button
+        android:id="@+id/btnPasar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textSize="16sp"
+        android:text="Pasar"
+        android:textColor="#FFFF"
+        app:layout_constraintBottom_toTopOf="@+id/scroll_mano_cartas"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck" />
+
+    <Button
+        android:id="@+id/btnCogerCarta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Coger carta"
+        android:textColor="#FFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/scroll_mano_cartas"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck,TextContrastCheck,TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/tVcantidadCartas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:background="#05FFFFFF"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:text="Cartas: "
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/carta_volteada"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/carta_volteada" />
+
+    <EditText
+        android:id="@+id/eTcantidadCartas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#05FFFFFF"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:foregroundGravity="center"
+        android:gravity="center_vertical"
+        android:inputType="number|numberDecimal"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tVcantidadCartas"
+        app:layout_constraintStart_toEndOf="@+id/tVcantidadCartas"
+        app:layout_constraintTop_toTopOf="@+id/tVcantidadCartas"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

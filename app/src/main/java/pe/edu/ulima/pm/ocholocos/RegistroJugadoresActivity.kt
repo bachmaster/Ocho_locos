@@ -2,6 +2,7 @@ package pe.edu.ulima.pm.ocholocos
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -83,6 +84,7 @@ class RegistroJugadoresActivity: AppCompatActivity() {
             //Se carga la cantidad de jugadores
             val dataCantidad = Bundle()
             dataCantidad.putInt("cantidad_jugadores",cantidad_de_jugadores)
+            Log.i(null,"cnt_jds = ${dataCantidad.getInt("cantidad_jugadores")}")
             intent.putExtras(dataCantidad)
 
             //Se inicia la actividad

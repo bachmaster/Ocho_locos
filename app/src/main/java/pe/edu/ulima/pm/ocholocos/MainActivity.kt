@@ -132,8 +132,8 @@ class MainActivity: AppCompatActivity()
                         }
                         val cnt_cartas=lista_jugadores[i].cartas_asignadas
 
-                        lista_jugadores[i].ha_jugado = false       //se declara el jugador actual como no jugado
-                        lista_jugadores[i].saltos_acum=0
+                        lista_jugadores[cant_jgds-1].ha_jugado = false       //se declara el jugador actual como no jugado
+                        lista_jugadores[cant_jgds-1].saltos_acum=0
                         //Saltar el turno la cantidad de veces que se le asigne al jugador
                         for(j in 0..cnt_cartas) {
                             saltarTurno()
@@ -302,6 +302,8 @@ class MainActivity: AppCompatActivity()
                     verMazoActual(mazoActual, lista_jugadores[0].mazo)
                     //se muestra la cantidad de cartas del jugador 1
                     eTcantidadCartas.text = lista_jugadores[0].getCantCartas().toString()
+                    Log.i(null,  "ha_jugado -> jugador 1: ${lista_jugadores[0].ha_jugado}\n"+
+                                            "ha_jugado -> jugador ultimo: ${lista_jugadores[cant_jgds-1].ha_jugado} ")
                     break
                 }
                 //Para cualquier jugador
@@ -314,6 +316,8 @@ class MainActivity: AppCompatActivity()
 
                     //se muestra la cantidad de cartas del siguiente jugador
                     eTcantidadCartas.text = lista_jugadores[i+1].getCantCartas().toString()
+                    Log.i(null,  "ha_jugado -> jugador 1: ${lista_jugadores[0].ha_jugado}\n"+
+                            "ha_jugado -> jugador ultimo: ${lista_jugadores[cant_jgds-1].ha_jugado} ")
                     break
                 }
 

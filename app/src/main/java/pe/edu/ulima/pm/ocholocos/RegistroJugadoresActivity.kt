@@ -15,6 +15,7 @@ class RegistroJugadoresActivity: AppCompatActivity() {
     private var eTjugadores= mutableListOf<EditText>()
     private var btnJugar: Button? = null
     private var cantidad_de_jugadores = 0
+    lateinit var imgBtnComoJugar: ImageButton
 
     //Se genera la vista del activity
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,6 +90,11 @@ class RegistroJugadoresActivity: AppCompatActivity() {
 
             //Se inicia la actividad
             startActivity(intent)
+        }
+
+        imgBtnComoJugar=findViewById(R.id.imgBtnComoJugar)
+        imgBtnComoJugar.setOnClickListener{
+            Log.i(null,"Mostrar ventana de instrucciones")
         }
     }
 

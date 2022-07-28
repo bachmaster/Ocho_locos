@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import kotlin.properties.Delegates
 
 class RegistroJugadoresActivity: AppCompatActivity() {
 
@@ -17,6 +16,7 @@ class RegistroJugadoresActivity: AppCompatActivity() {
     private var cantidad_de_jugadores = 0
     lateinit var imgBtnComoJugar: ImageButton
 
+
     //Se genera la vista del activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +24,10 @@ class RegistroJugadoresActivity: AppCompatActivity() {
 
         //Se captura el spinner
         var spPlayers: Spinner= findViewById(R.id.spPlayers)
+
+        //Se captura el boton jugar e instrucciones
+        btnJugar = findViewById(R.id.btnJugar)
+        imgBtnComoJugar=findViewById(R.id.imgBtnComoJugar)
 
         //Se capturan los ediText
         eTjugadores.add(findViewById(R.id.eTjugador1))
@@ -40,7 +44,6 @@ class RegistroJugadoresActivity: AppCompatActivity() {
         val customList= listOf(2,3,4,5)
         val adapter= ArrayAdapter(this, R.layout.custom_simple_list, customList)
         spPlayers.adapter= adapter
-
 
         spPlayers.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -61,10 +64,7 @@ class RegistroJugadoresActivity: AppCompatActivity() {
             }
         }
 
-
-        //Se captura el boton jugar
-        btnJugar = findViewById(R.id.btnJugar)
-
+        //Se asigna el listener al boton jugar
         btnJugar?.setOnClickListener {
             cantidad_de_jugadores = cantidadDeJugadoresVisibles()
             val intent= Intent()
@@ -92,9 +92,10 @@ class RegistroJugadoresActivity: AppCompatActivity() {
             startActivity(intent)
         }
 
-        imgBtnComoJugar=findViewById(R.id.imgBtnComoJugar)
         imgBtnComoJugar.setOnClickListener{
-            Log.i(null,"Mostrar ventana de instrucciones")
+            val intent= Intent()
+            intent.setClass(this,InstruccionesActivity::class.java)// Intent configurado
+            startActivity(intent)
         }
     }
 

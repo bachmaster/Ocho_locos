@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_main_v"
+    android:orientation="vertical">
+
+    <!--Titulo-->
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/almendra_sc"
+        android:text="Instrucciones"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!--Ponerle scroll-->
+    <ScrollView
+        android:id="@+id/linearLayout3"
+        android:fillViewport="true"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:padding="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/imgBtnReturnToMain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+        <!--objetivo-->
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/texto_instrucciones"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </ScrollView>
+
+    <!--boton retornar-->
+    <ImageButton
+        android:id="@+id/imgBtnReturnToMain"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="32dp"
+        android:background="#00FFFFFF"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+        app:srcCompat="@drawable/ic_baseline_subdirectory_arrow_left_24"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

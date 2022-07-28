@@ -217,8 +217,8 @@
         android:scaleType="centerInside"
         android:src="@drawable/how_to_play_icon"
         app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toStartOf="@+id/btnJugar"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnJugar"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView

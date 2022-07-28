@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">OchoLocos</string>
+    <string name="texto_instrucciones">🎯 Objetivo:\nEl primer jugador sin cartas gana! 🏆\n\n📏 Reglas:\n➡️ Puedes lanzar una carta tocándola.\n\n➡️ Puedes lanzar varias cartas del mismo valor, sin importar su símbolo.\n\n➡️ Las cartas especiales son acumulables\n\n🃏 Cartas Especiales\n➡️ 11: Salta el turno del siguiente jugador.\n\n➡️ 13: Hace que el siguiente jugador deba tomar 3 cartas</string>
+
 </resources>

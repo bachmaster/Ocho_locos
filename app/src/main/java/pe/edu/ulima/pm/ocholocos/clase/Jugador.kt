@@ -17,19 +17,8 @@ class Jugador(var nombre:String)
 
     var saltos_acum=0//variable para saber cuantas veces se le asignaron 11
 
+    var cant_12 = 0 //variable para saber cuantas veces se le asignaron 12
     var cant_13=0//variable para saber cuantas veces se le asignaron 13
-
-    fun encontrar13():Int {
-        var cont=0
-        for (i in 0 until mazo.size)
-        {
-            if (mazo[i].getValor()==13)
-            {
-                cont++
-            }
-        }
-        return cont
-    }
 
     fun getCantCartas():Int
     {
@@ -40,8 +29,8 @@ class Jugador(var nombre:String)
     {
         mazo.add(c)
         cant_cartas++
+        cant_12=encontrar12()
         cant_13=encontrar13()
-
     }
     fun agregarAlinicio(c: CardView)
     {
@@ -54,13 +43,39 @@ class Jugador(var nombre:String)
         }
         mazo[0] = cartaAux
         cant_cartas++
+        cant_12=encontrar12()
         cant_13=encontrar13()
     }
     fun eliminarCarta(c: CardView)
     {
         mazo.remove(c)
         cant_cartas--
+        cant_12=encontrar12()
         cant_13=encontrar13()
+    }
+
+    fun encontrar12(): Int {
+        var cont=0
+        for (i in 0 until mazo.size)
+        {
+            if (mazo[i].getValor()==12)
+            {
+                cont++
+            }
+        }
+        return cont
+    }
+
+    fun encontrar13():Int {
+        var cont=0
+        for (i in 0 until mazo.size)
+        {
+            if (mazo[i].getValor()==13)
+            {
+                cont++
+            }
+        }
+        return cont
     }
 
 }

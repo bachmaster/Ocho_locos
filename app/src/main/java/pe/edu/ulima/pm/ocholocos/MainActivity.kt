@@ -42,7 +42,9 @@ class MainActivity: AppCompatActivity()
         }
 
         //Se captura la carta Central y se le setea un valor aleatorio
-        carta_del_centro = findViewById(R.id.central_card); carta_del_centro.randomCV()
+        carta_del_centro = findViewById(R.id.central_card);
+        carta_del_centro.randomCV()
+        carta_del_centro.setAttrs(11,"corazon") //probando los 11's
 
         //Capturamos el textView
         tVturnoJ = findViewById(R.id.tVturnoJ)
@@ -69,7 +71,7 @@ class MainActivity: AppCompatActivity()
         tocarCarta()
 
 
-        //Cuando se toca el boton coger carta
+        //Cuando se toca sobre una carta
         btnCogerCarta.setOnClickListener {
             for(i in 0 until cant_jgds)
             {
@@ -111,7 +113,7 @@ class MainActivity: AppCompatActivity()
                         //Si el jugador 1 tiene cartas por asignar
                         if(lista_jugadores[0].asignarCartas) {
                             //Si se encuentra un 13 en el mazo de este jugador
-                            if (lista_jugadores[0].encontrar13()>0){
+                            if (lista_jugadores[0].encontrar13()>0 || lista_jugadores[0].encontrar12()>0){
                                 //Se habilita la opción de asignar cartas al siguiente jugador
                                 lista_jugadores[1].asignarCartas=true
                                 //Se le traslada el valor del atributo cartas_asignadas
@@ -130,15 +132,21 @@ class MainActivity: AppCompatActivity()
                                 lista_jugadores[0].asignarCartas=false
                             }
                         }
-                        val cnt_cartas=lista_jugadores[i].cartas_asignadas
+
+                        val cnt_saltos=lista_jugadores[cant_jgds-1].saltos_acum
 
                         lista_jugadores[cant_jgds-1].ha_jugado = false       //se declara el jugador actual como no jugado
                         lista_jugadores[cant_jgds-1].saltos_acum=0
-                        //Saltar el turno la cantidad de veces que se le asigne al jugador
-                        for(j in 0..cnt_cartas) {
-                            saltarTurno()
-                        }
 
+                        //si la cantidad de jugadores es igual a 2
+                        if(cant_jgds==2){
+                            if(cnt_saltos==0) saltarTurno()
+                        }else {
+                            //Saltar el turno la cantidad de veces que se le asigne al jugador
+                            (0..cnt_saltos).forEach { _ ->
+                                saltarTurno()
+                            }
+                        }
 
                         break
                     }
@@ -174,22 +182,20 @@ class MainActivity: AppCompatActivity()
                                         lista_jugadores[1].asignarCartas=false
                                     }
                                 }
-                                val cnt_cartas=lista_jugadores[i].saltos_acum
+                                val cnt_saltos=lista_jugadores[i].saltos_acum
                                 lista_jugadores[i].ha_jugado = false
                                 lista_jugadores[i].saltos_acum=0
                                 //Saltar el turno la cantidad de veces que se le asigne al jugador
-                                for(j in 0..cnt_cartas) {
+                                if(cnt_saltos==0){
                                     saltarTurno()
                                 }
-
-
                                 break
                             }
                             else->{
                                 //Si el jugador siguiente tiene cartas por agregar
                                 if(lista_jugadores[i+1].asignarCartas) {
                                     //Si se encuentra un 13 en el mazo de ese jugador
-                                    if (lista_jugadores[i+1].encontrar13()>0){
+                                    if (lista_jugadores[i+1].encontrar13()>0 || lista_jugadores[0].encontrar12()>0){
                                         //Se habilita la opción de asignar cartas al subsiguiente jugador
                                         lista_jugadores[i+2].asignarCartas=true
                                         //Se le trasladan las cartas acumuladas del jugador previo
@@ -233,18 +239,21 @@ class MainActivity: AppCompatActivity()
     }
 
     private fun otraCartaIgual(carta:CardView, mazo: MutableList<CardView>):Boolean{
-        for (i in mazo) {
-            if (carta.getValor() == i.getValor() ) {
-                return true
-            }
-        }
-        return false
+        //Retornar verdadero si hay alguna otra carta en la mano igual a la lanzada
+        return mazo.any { carta.getValor() == it.getValor() }
     }
 
     //Funcion para crear 8 cartas aleatorias y asignarlas a un jugador
     private fun repartir_cartas(j : Jugador)
     {
-        for (i in 1..8)
+        val newCard2: CardView= cartaAleatoria()
+        newCard2.setAttrs(12,"trebol")
+        j.agregarCarta(newCard2)
+        val newCard3: CardView= cartaAleatoria()
+        newCard3.setAttrs(12,"corazon")
+        j.agregarCarta(newCard3)
+
+        for (i in 0..1)
         {
             val newCard: CardView= cartaAleatoria()
             j.agregarCarta(newCard)
@@ -357,137 +366,52 @@ class MainActivity: AppCompatActivity()
                         val c1 = v as CardView//se captura la carta
 
                         //Si la carta tocada es igual a la carta central en palo o valor
-                        if(c1.getValor()==carta_del_centro.getValor() ||
-                            c1.getPalo()==carta_del_centro.getPalo())
+                        if((c1.getValor() == carta_del_centro.getValor()) ||
+                            (c1.getPalo() == carta_del_centro.getPalo())
+                        )
                         {
                             //Se busca al jugador actual
                             for(j in 0 until cant_jgds)
                             {
+                                //SI AÚN NO HA LANZADO UNA CARTA
                                 when
                                 {
                                     //SI ES TURNO DE UN JUGADOR
                                     tVturnoJ.text.contains(lista_jugadores[j].nombre) ->
-                                    {
-                                        //SI AÚN NO HA LANZADO UNA CARTA
-                                        if (!lista_jugadores[j].ha_jugado)
+                                        if (!lista_jugadores[j].ha_jugado)//Se verifica si ha jugado
                                         {
                                             //Se evalúa el valor de la carta tocada
-                                            when (c1.getValor())
-                                            {
-                                                //Si la carta tocada es un 11
-                                                11 -> {
-                                                    lista_jugadores[j].saltos_acum++
-                                                }
-
-                                                //Si la carta tocada es un 13
-                                                13 -> {
-                                                    when(j){
-                                                        cant_jgds-1 -> {
-                                                            lista_jugadores[0].asignarCartas=true
-                                                            lista_jugadores[0].cartas_asignadas+=3
-
-                                                        }
-                                                        else -> {
-                                                            lista_jugadores[j+1].asignarCartas=true
-                                                            lista_jugadores[j+1].cartas_asignadas+=3
-                                                        }
-                                                    }
-                                                }
-                                                /*
-                                                12 -> {
-                                                    lista_jugadores[0].asignarCartas = true
-                                                    lista_jugadores[0].cartas_asignadas += 2
-                                                }*/
-
-                                            }
+                                            evaluarCartaTocada(c1, j)
 
                                             //Se verifica el atributo volver a jugar
-                                            if (lista_jugadores[j].volver_a_jugar)
-                                            {
-                                                //Se setea el atributo volver a jugar como false
-                                                lista_jugadores[j].volver_a_jugar = false
-
-                                                // Si carta tocada = carta central en valor
-                                                if (c1.getValor() == carta_del_centro.getValor())
-                                                {
-                                                    //Se lanza la carta
-                                                    lanzarCarta(lista_jugadores[j], c1)
-                                                }
-                                                else{
-                                                    continue
-                                                }
-                                            }
-
-                                            //Si no se esta volviendo a jugar
-                                            else {
-
-                                                //Se lanza la carta
-                                                lanzarCarta(lista_jugadores[j], c1)
-                                            }
+                                            if (verificarVolverAjugar(j, c1)) continue
 
                                             //--------------------------------------------------
 
-                                            //Si la cantidad de cartas es 1
-                                            if (lista_jugadores[j].getCantCartas() == 1)
-                                            {
-                                                //Se muestra un aviso
-                                                Toast.makeText(this,
-                                                    "¡${lista_jugadores[j].nombre} tiene una carta!",
-                                                    Toast.LENGTH_LONG).show()
-                                            }
-
-                                            //Si la cantidad de cartas es 0
-                                            if (lista_jugadores[j].getCantCartas() == 0)
-                                            {
-                                                //se termina el juego
-                                                juegoTerminado()
-                                                break
+                                            //Cuando la cantidad de cartas es 0 hacer algo y cuando es 1 hacer otra cosa
+                                            when{
+                                                lista_jugadores[j].getCantCartas() == 0 -> {
+                                                    //se termina el juego
+                                                    juegoTerminado()
+                                                    break
+                                                }
+                                                lista_jugadores[j].getCantCartas() == 1 -> {
+                                                    //Se muestra un aviso
+                                                    Toast.makeText(this,
+                                                        "¡${lista_jugadores[j].nombre} tiene una carta!",
+                                                        Toast.LENGTH_LONG).show()
+                                                }
                                             }
 
                                             //Si se tiene una carta igual a la lanzada
-                                            if (otraCartaIgual(c1, lista_jugadores[j].mazo))
-                                            {
-                                                //Si carta tocada = carta central
-                                                if (c1.getValor() == carta_del_centro.getValor())
-                                                {
-                                                    //Se setea el atributo volver a jugar
-                                                    lista_jugadores[j].volver_a_jugar = true
-
-                                                    //Se muestra un mensaje
-                                                    Toast.makeText(this,
-                                                        "Se puede repetir el turno",
-                                                        Toast.LENGTH_SHORT).show()
-
-                                                    //Se oculta el boton pasar
-                                                    btnPasarTurno.isVisible = false
-
-                                                    //Se da la funcionalidad de tocar carta
-                                                    tocarCarta()
-                                                }
-                                                else{
-                                                    continue
-                                                }
-                                            }
-                                            else {
-                                                //se setea el atributo ha_jugado
-                                                lista_jugadores[j].ha_jugado = true
-
-                                                //se desaparece el boton coger carta
-                                                btnCogerCarta.isVisible = false
-
-                                                //se muestra el boton pasar
-                                                btnPasarTurno.isVisible = true
-                                            }
+                                            if (verificarOtraCartaIgual(c1, j)) continue
                                             break
                                         }
                                         else{
                                             continue
                                         }
-                                    }
                                     else->
-                                    {
                                         continue
-                                    }
 
                                 }
                             }
@@ -498,33 +422,133 @@ class MainActivity: AppCompatActivity()
                         else
                         {
                             //Se busca el jugador actual
-                            for(j in 0 until cant_jgds)
-                            {
-                                when
-                                {
-                                    // Cuando se encuentra al jugador actual
-                                    tVturnoJ.text.contains(lista_jugadores[j].nombre) ->
-                                    {
-                                        //Si es que este no ha jugado
-                                        if (!lista_jugadores[j].ha_jugado)
-                                        {
-                                            Toast.makeText(this,
-                                                "No puedes coger esa carta",
-                                                Toast.LENGTH_SHORT).show()
-                                            break
-                                        }
-                                        else{
-                                            continue
-                                        }
-                                    }
-                                }
-                            }
+                            verificarValorCarta()
                         }
                     }
                 }
             }
             true
         }
+    }
+
+    private fun evaluarCartaTocada(c1: CardView, j: Int) {
+        when (c1.getValor()) {
+            //Si la carta tocada es un 11
+            11 -> {
+                lista_jugadores[j].saltos_acum++
+            }
+
+            12 -> {
+                when (j) {
+                    cant_jgds - 1 -> {
+                        lista_jugadores[0].asignarCartas = true
+                        lista_jugadores[0].cartas_asignadas += 2
+
+                    }
+                    else -> {
+                        lista_jugadores[j + 1].asignarCartas = true
+                        lista_jugadores[j + 1].cartas_asignadas += 2
+                    }
+                }
+            }
+            //Si la carta tocada es un 13
+            13 -> {
+                when (j) {
+                    cant_jgds - 1 -> {
+                        lista_jugadores[0].asignarCartas = true
+                        lista_jugadores[0].cartas_asignadas += 3
+
+                    }
+                    else -> {
+                        lista_jugadores[j + 1].asignarCartas = true
+                        lista_jugadores[j + 1].cartas_asignadas += 3
+                    }
+                }
+            }
+
+
+        }
+    }
+
+    private fun verificarValorCarta() {
+        for (j in 0 until cant_jgds) {
+            when {
+                // Cuando se encuentra al jugador actual
+                tVturnoJ.text.contains(lista_jugadores[j].nombre) -> {
+                    //Si es que este no ha jugado
+                    if (lista_jugadores[j].ha_jugado) {
+                        continue
+                    } else {
+                        Toast.makeText(this,
+                            "No puedes coger esa carta",
+                            Toast.LENGTH_SHORT).show()
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+    private fun verificarOtraCartaIgual(
+        c1: CardView,
+        j: Int,
+    ): Boolean {
+        if (otraCartaIgual(c1, lista_jugadores[j].mazo)) {
+            //Si carta tocada = carta central
+            if (c1.getValor() == carta_del_centro.getValor()) {
+                //Se setea el atributo volver a jugar
+                lista_jugadores[j].volver_a_jugar = true
+
+                //Se muestra un mensaje
+                Toast.makeText(this,
+                    "Se puede repetir el turno",
+                    Toast.LENGTH_SHORT).show()
+
+                //Se oculta el boton pasar
+                btnPasarTurno.isVisible = false
+
+                //Se da la funcionalidad de tocar carta
+                tocarCarta()
+            } else {
+                return true
+            }
+        } else {
+            //se setea el atributo ha_jugado
+            lista_jugadores[j].ha_jugado = true
+
+            //se desaparece el boton coger carta
+            btnCogerCarta.isVisible = false
+
+            //se muestra el boton pasar
+            btnPasarTurno.isVisible = true
+        }
+        return false
+    }
+
+    private fun verificarVolverAjugar(
+        j: Int,
+        c1: CardView,
+    ): Boolean {
+        if (lista_jugadores[j].volver_a_jugar) {
+            //Se setea el atributo volver a jugar como false
+            lista_jugadores[j].volver_a_jugar = false
+
+            // Si carta tocada = carta central en valor
+            if (c1.getValor() == carta_del_centro.getValor()) {
+                //Se lanza la carta
+                lanzarCarta(lista_jugadores[j], c1)
+            } else {
+                return true
+            }
+        }
+
+        //Si no se esta volviendo a jugar
+        else {
+
+            //Se lanza la carta
+            lanzarCarta(lista_jugadores[j], c1)
+        }
+        return false
     }
 }
 
